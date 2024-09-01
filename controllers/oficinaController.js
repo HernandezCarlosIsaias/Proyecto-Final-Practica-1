@@ -19,7 +19,21 @@ const list = async(req, res) => {
     }
 }
 
+const create = async(req, res) => {
+    const { nombre} = req.body;
+    if (!nombre) {
+        return res.status(400).send({ message: "Faltan datos de completar" });
+    }
+    try {
+        const oficina = await Oficina.create(req.body);
+        res.status(201).send(oficina);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
 module.exports = {
     office,
-    list
+    list,
+    create
 }
