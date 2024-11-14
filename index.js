@@ -9,8 +9,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/personas", personaRouter);
-app.use("/api/oficina", oficinaRouter);
 app.use("/api/auth", authRouter);
 
 

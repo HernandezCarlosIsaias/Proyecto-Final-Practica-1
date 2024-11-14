@@ -1,7 +1,7 @@
 const parameters = {
-    username: "Practica1",
-    password: "Practica2024",
-    database: "my_db",
+    username: "root",
+    password: "1234",
+    database: "mi_db_final",
     host: "localhost",
     dialect: "mysql",
 };
