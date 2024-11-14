@@ -1,34 +1,38 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const db = require("../models");
-const Persona = db.persona;
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const db = require('../models'); // Importar los modelos
+const Usuario = db.Usuario; // Acceder al modelo Usuario
 
-const login = async (req,res) => {
-    const {mail,password} = req.body;
+const login = async(req, res) => {
+    const { mail, password } = req.body;    
+
     try {
-        const persona = await Persona.findOne({where:{mail}});
-        if (!persona) {
-            return res.status (404).send ({menssage: "Persona no encontrada"});
+        //1 - Constatar que existe una cuenta con ese mail
+        const usuario = await Usuario.findOne({ where: { mail } });
+        if (!usuario) {
+            return res.status(404).send({ message: "Usuario no encontrada" });
         }
-        const isMatch = await bcrypt.compare(password,persona.password);
-        if (!isMatch){
-            return res.status(400).send ({menssage: "Password incorrecto"});
-        } 
-        const token= jwt.sign({
-            id:persona.id,
-            nombre: persona.nombre,
-            mail: persona.mail
-        },"1234",{expiresIn:180});
-        res.status(200).send({token});
+        //2 - Verificar password
+        const isMatch = await bcrypt.compare(password, usuario.password);
+        if (!isMatch) {
+            return res.status(400).send({ message: "Password incorrecto" });
+        }
+        //3 - Crear token
+        const token = jwt.sign({
+            id: usuario.id,
+            nombre: usuario.nombre,
+            mail: usuario.mail
+        }, "1234", { expiresIn: 180 });
+        res.status(200).send({ token });
     } catch (error) {
         res.status(500).send({
-            menssage:"Error del servidor", 
-            tipo:error.name,
-            detalles:error.menssage
+            message: "Error en el servidor",
+            tipo: error.name,
+            detalles: error.message
         });
     }
 }
 
 module.exports = {
-    login,
+    login
 }
