@@ -1,4 +1,4 @@
-const { Sequelize, ForeignKeyConstraintError } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const parameters = require("../config/config");
 
 
@@ -16,10 +16,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.persona = require("./persona")(sequelize, Sequelize);
-db.oficina = require("./oficina")(sequelize, Sequelize);
-
-db.oficina.hasMany(db.persona,{foreignKey: "oficinaId"});
-db.persona.belongsTo(db.oficina,{foreignKey: "oficinaId"});
+db.Usuario = require('./usuario')(sequelize, Sequelize);
 
 module.exports = db;
