@@ -12,6 +12,4 @@ router.get("/list", usuarioController.list);
 router.post("/login", usuarioController.login);
 
 
-
-
 module.exports = router;
